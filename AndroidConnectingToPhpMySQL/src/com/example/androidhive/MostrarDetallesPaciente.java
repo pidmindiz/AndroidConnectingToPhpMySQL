@@ -40,7 +40,7 @@ public class MostrarDetallesPaciente extends Activity {
 	JSONParser jsonParser = new JSONParser();
 
 	// single product url
-	private static final String url_paciente_detalles = "http://10.0.2.2/android_connect/get_product_details.php";
+	private static final String url_paciente_detalles = "http://www.ecuaconnect.com/ihm_android/crud/get_detalles_paciente.php";
 
 	// url to update product
 	private static final String url_update_product = "http://10.0.2.2/android_connect/update_product.php";
@@ -154,21 +154,17 @@ public class MostrarDetallesPaciente extends Activity {
 							// Edit Text
 							txtNombresApellidos = (TextView) findViewById(R.id.pac_nombres_apellidos);
 							txtTipoSangre = (TextView) findViewById(R.id.pac_tipo_sangre);
+							txtEdad = (TextView) findViewById(R.id.pac_edad);
 							txtCedula = (TextView) findViewById(R.id.pac_cedula);
-							txtCedula = (TextView) findViewById(R.id.pac_cedula);
-							txtCedula = (TextView) findViewById(R.id.pac_cedula);
-							TextView txtCedula;
-							TextView txtNombresApellidos;
-							TextView txtTipoSangre;
-							TextView txtTelefono;
-							TextView txtEdad;
-							txtPrice = (EditText) findViewById(R.id.inputPrice);
-							txtDesc = (EditText) findViewById(R.id.inputDesc);
+							txtTelefono = (TextView) findViewById(R.id.pac_telefono);
+							
 
 							// display product data in EditText
-							txtName.setText(product.getString(TAG_NOMBRES));
-							txtPrice.setText(product.getString(TAG_PRICE));
-							txtDesc.setText(product.getString(TAG_DESCRIPTION));
+							txtNombresApellidos.setText(paciente.getString(TAG_NOMBRES_APELLIDOS));
+							txtTipoSangre.setText(paciente.getString("Tipo de Sangre: "+TAG_TIPO_SANGRE));
+							txtEdad.setText(paciente.getString("Edad: "+TAG_EDAD+" años"));
+							txtCedula.setText(paciente.getString("CI: "+TAG_CEDULA));
+							txtTelefono.setText(paciente.getString("Teléfono: "+TAG_TELEFONO));
 							
 						}else{
 							// product with pid not found

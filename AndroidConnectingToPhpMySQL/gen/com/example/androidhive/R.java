@@ -25,8 +25,9 @@ public final class R {
         public static final int inputName=0x7f050000;
         public static final int inputPrice=0x7f050001;
         public static final int pac_cedula=0x7f050007;
-        public static final int pac_edad=0x7f05000f;
+        public static final int pac_edad=0x7f050010;
         public static final int pac_nombres_apellidos=0x7f05000d;
+        public static final int pac_telefono=0x7f05000f;
         public static final int pac_tipo_sangre=0x7f05000e;
         public static final int paciente=0x7f050008;
         public static final int usuario=0x7f050009;
