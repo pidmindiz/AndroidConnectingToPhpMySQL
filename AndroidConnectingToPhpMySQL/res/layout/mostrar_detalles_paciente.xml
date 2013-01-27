@@ -8,15 +8,6 @@
 	-->
 	
 	 <TextView
-        android:id="@+id/pac_cedula"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="6dip"
-        android:paddingLeft="6dip"
-        android:textSize="17dip"
-        android:textStyle="bold" />
-	
-	 <TextView
         android:id="@+id/pac_nombres_apellidos"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -36,6 +27,15 @@
         android:textStyle="bold" />
 	 
 	 <TextView
+        android:id="@+id/pac_edad"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dip"
+        android:paddingLeft="6dip"
+        android:textSize="17dip"
+        android:textStyle="bold" />
+	 
+	 <TextView
         android:id="@+id/pac_telefono"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -45,17 +45,20 @@
         android:textStyle="bold" />
 	 
 	 <TextView
-        android:id="@+id/pac_edad"
+        android:id="@+id/pac_cedula"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="6dip"
         android:paddingLeft="6dip"
         android:textSize="17dip"
         android:textStyle="bold" />
+ 
     
-        <ListView
+      <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
+        
+        
 
 </LinearLayout>

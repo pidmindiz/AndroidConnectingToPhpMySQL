@@ -30,7 +30,7 @@
         <!-- Mostrar detalles del paciente -->
         <activity
             android:name=".MostrarDetallesPaciente"
-            android:label="Todas las Citas" >
+            android:label="Detalles del paciente" >
         </activity>
         
         <!-- All Product Activity -->

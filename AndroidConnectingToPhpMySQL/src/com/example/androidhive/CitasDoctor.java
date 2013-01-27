@@ -77,7 +77,7 @@ public class CitasDoctor extends ListActivity {
 
 				// Starting new intent
 				Intent in = new Intent(getApplicationContext(),
-						EditProductActivity.class);
+						MostrarDetallesPaciente.class);
 				// sending pid to next activity
 				in.putExtra(TAG_CEDULA, pac_cedula);
 				
@@ -116,7 +116,7 @@ public class CitasDoctor extends ListActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(CitasDoctor.this);
-			pDialog.setMessage("Loading products. Please wait...");
+			pDialog.setMessage("Cargando citas. Por favor espere...");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
@@ -200,7 +200,7 @@ public class CitasDoctor extends ListActivity {
 					 * */
 					ListAdapter adapter = new SimpleAdapter(
 							CitasDoctor.this, citasList,
-							R.layout.list_item, new String[] { TAG_CODIGO,
+							R.layout.list_item, new String[] { TAG_CODIGO, TAG_CEDULA,
 									TAG_PACIENTE, TAG_USUARIO, TAG_HORA, TAG_FECHA},
 							new int[] { R.id.cit_codigo, R.id.pac_cedula, R.id.paciente, R.id.usuario, R.id.hora, R.id.fecha });
 					// updating listview

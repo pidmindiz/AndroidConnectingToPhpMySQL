@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class MostrarDetallesPaciente extends Activity {
@@ -43,16 +45,16 @@ public class MostrarDetallesPaciente extends Activity {
 	private static final String url_paciente_detalles = "http://www.ecuaconnect.com/ihm_android/crud/get_detalles_paciente.php";
 
 	// url to update product
-	private static final String url_update_product = "http://10.0.2.2/android_connect/update_product.php";
+	private static final String url_update_product = "http://www.ecuaconnect.com/ihm_android/crud/get_detalles_paciente.php";
 	
 	// url to delete product
-	private static final String url_delete_product = "http://10.0.2.2/android_connect/delete_product.php";
+	private static final String url_delete_product = "http://www.ecuaconnect.com/ihm_android/crud/get_detalles_paciente.php";
 
 	// JSON Node names
 	private static final String TAG_SUCCESS = "success";
-	private static final String TAG_PACIENTE = "paciente";
+	private static final String TAG_PACIENTE = "pacientes";
 	
-	private static final String TAG_CODIGO = "cit_codigo";
+	//private static final String TAG_CODIGO = "cit_codigo";
 	private static final String TAG_CEDULA = "pac_cedula";
 	private static final String TAG_NOMBRES_APELLIDOS = "pac_nombres_apellidos";
 	private static final String TAG_TIPO_SANGRE = "pac_tipo_sangre";
@@ -161,10 +163,11 @@ public class MostrarDetallesPaciente extends Activity {
 
 							// display product data in EditText
 							txtNombresApellidos.setText(paciente.getString(TAG_NOMBRES_APELLIDOS));
-							txtTipoSangre.setText(paciente.getString("Tipo de Sangre: "+TAG_TIPO_SANGRE));
-							txtEdad.setText(paciente.getString("Edad: "+TAG_EDAD+" años"));
-							txtCedula.setText(paciente.getString("CI: "+TAG_CEDULA));
-							txtTelefono.setText(paciente.getString("Teléfono: "+TAG_TELEFONO));
+							txtTipoSangre.setText("Tipo de Sangre: "+ paciente.getString(TAG_TIPO_SANGRE));
+							txtTipoSangre.setText("Tipo de Sangre: "+paciente.getString(TAG_TIPO_SANGRE));
+							txtEdad.setText("Edad: "+ paciente.getString(TAG_EDAD)+ " años");
+							txtCedula.setText("CI: "+ paciente.getString(TAG_CEDULA));
+							txtTelefono.setText("Teléfono: "+paciente.getString(TAG_TELEFONO));
 							
 						}else{
 							// product with pid not found
@@ -312,14 +315,7 @@ public class MostrarDetallesPaciente extends Activity {
 			return null;
 		}
 
-		/**
-		 * After completing background task Dismiss the progress dialog
-		 * **/
-		protected void onPostExecute(String file_url) {
-			// dismiss the dialog once product deleted
-			pDialog.dismiss();
-
-		}
-
 	}
+	
+	
 }
