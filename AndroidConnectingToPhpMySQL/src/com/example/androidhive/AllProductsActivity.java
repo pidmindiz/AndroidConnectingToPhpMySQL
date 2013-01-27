@@ -193,7 +193,7 @@ public class AllProductsActivity extends ListActivity {
 			// updating UI from Background Thread
 			runOnUiThread(new Runnable() {
 				public void run() {
-					/**
+					/**list
 					 * Updating parsed JSON data into ListView
 					 * */
 					ListAdapter adapter = new SimpleAdapter(
