@@ -21,6 +21,18 @@
             </intent-filter>
         </activity>
 
+        <!-- Todas las citas -->
+        <activity
+            android:name=".CitasDoctor"
+            android:label="Todas las Citas" >
+        </activity>
+        
+        <!-- Mostrar detalles del paciente -->
+        <activity
+            android:name=".MostrarDetallesPaciente"
+            android:label="Todas las Citas" >
+        </activity>
+        
         <!-- All Product Activity -->
         <activity
             android:name=".AllProductsActivity"

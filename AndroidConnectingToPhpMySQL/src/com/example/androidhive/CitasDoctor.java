@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-public class AllProductsActivity extends ListActivity {
+public class CitasDoctor extends ListActivity {
 
 	// Progress Dialog
 	private ProgressDialog pDialog;
@@ -31,23 +31,24 @@ public class AllProductsActivity extends ListActivity {
 	// Creating JSON Parser object
 	JSONParser jParser = new JSONParser();
 
-	ArrayList<HashMap<String, String>> productsList;
+	ArrayList<HashMap<String, String>> citasList;
 
 	// url to get all products list
-	private static String url_all_products = "http://www.ecuaconnect.com/ihm_android/crud/get_all_citas.php";
+	private static String url_all_citas = "http://www.ecuaconnect.com/ihm_android/crud/get_all_citas.php";
 
 	// JSON Node names
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_CITAS = "citas";
 	
-	private static final String TAG_PID = "cit_codigo";
+	private static final String TAG_CODIGO = "cit_codigo";
+	private static final String TAG_CEDULA = "pac_cedula";
 	private static final String TAG_HORA = "cit_hora";
 	private static final String TAG_FECHA = "cit_fecha";
 	private static final String TAG_USUARIO = "cit_usuario";
 	private static final String TAG_PACIENTE = "cit_paciente";
 
 	// products JSONArray
-	JSONArray products = null;
+	JSONArray citas = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,10 @@ public class AllProductsActivity extends ListActivity {
 		setContentView(R.layout.all_products);
 
 		// Hashmap for ListView
-		productsList = new ArrayList<HashMap<String, String>>();
+		citasList = new ArrayList<HashMap<String, String>>();
 
 		// Loading products in Background Thread
-		new LoadAllProducts().execute();
+		new CagarCitas().execute();
 
 		// Get listview
 		ListView lv = getListView();
@@ -71,14 +72,14 @@ public class AllProductsActivity extends ListActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// getting values from selected ListItem
-				String cit_codigo = ((TextView) view.findViewById(R.id.cit_codigo)).getText()
+				String pac_cedula = ((TextView) view.findViewById(R.id.pac_cedula)).getText()
 						.toString();
 
 				// Starting new intent
 				Intent in = new Intent(getApplicationContext(),
 						EditProductActivity.class);
 				// sending pid to next activity
-				in.putExtra(TAG_PID, cit_codigo);
+				in.putExtra(TAG_CEDULA, pac_cedula);
 				
 				// starting new activity and expecting some response back
 				startActivityForResult(in, 100);
@@ -106,7 +107,7 @@ public class AllProductsActivity extends ListActivity {
 	/**
 	 * Background Async Task to Load all product by making HTTP Request
 	 * */
-	class LoadAllProducts extends AsyncTask<String, String, String> {
+	class CagarCitas extends AsyncTask<String, String, String> {
 
 		/**
 		 * Before starting background thread Show Progress Dialog
@@ -114,7 +115,7 @@ public class AllProductsActivity extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			pDialog = new ProgressDialog(AllProductsActivity.this);
+			pDialog = new ProgressDialog(CitasDoctor.this);
 			pDialog.setMessage("Loading products. Please wait...");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
@@ -128,7 +129,7 @@ public class AllProductsActivity extends ListActivity {
 			// Building Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			// getting JSON string from URL
-			JSONObject json = jParser.makeHttpRequest(url_all_products, "GET", params);
+			JSONObject json = jParser.makeHttpRequest(url_all_citas, "GET", params);
 			
 			// Check your log cat for JSON reponse
 			Log.d("Todas las citas: ", json.toString());
@@ -140,33 +141,34 @@ public class AllProductsActivity extends ListActivity {
 				if (success == 1) {
 					// products found
 					// Getting Array of Products
-					products = json.getJSONArray(TAG_CITAS);
+					citas = json.getJSONArray(TAG_CITAS);
 
 					// looping through All Products
-					for (int i = 0; i < products.length(); i++) {
-						JSONObject c = products.getJSONObject(i);
+					for (int i = 0; i < citas.length(); i++) {
+						JSONObject c = citas.getJSONObject(i);
 
 						// Storing each json item in variable
-						String id = c.getString(TAG_PID);
+						String cit_codigo = c.getString(TAG_CODIGO);
+						String pac_cedula = c.getString(TAG_CEDULA);
 						String hora = c.getString(TAG_HORA);
 						String fecha = c.getString(TAG_FECHA);
 						String usuario = c.getString(TAG_USUARIO);
 						String paciente = c.getString(TAG_PACIENTE);
-						
 						
 
 						// creating new HashMap
 						HashMap<String, String> map = new HashMap<String, String>();
 
 						// adding each child node to HashMap key => value
-						map.put(TAG_PID, id);
+						map.put(TAG_CODIGO, cit_codigo);
+						map.put(TAG_CEDULA, pac_cedula);
 						map.put(TAG_PACIENTE, paciente);
 						map.put(TAG_USUARIO, usuario);
 						map.put(TAG_FECHA, hora);
 						map.put(TAG_HORA, fecha);
 
 						// adding HashList to ArrayList
-						productsList.add(map);
+						citasList.add(map);
 					}
 				} else {
 					// no products found
@@ -197,10 +199,10 @@ public class AllProductsActivity extends ListActivity {
 					 * Updating parsed JSON data into ListView
 					 * */
 					ListAdapter adapter = new SimpleAdapter(
-							AllProductsActivity.this, productsList,
-							R.layout.list_item, new String[] { TAG_PID,
+							CitasDoctor.this, citasList,
+							R.layout.list_item, new String[] { TAG_CODIGO,
 									TAG_PACIENTE, TAG_USUARIO, TAG_HORA, TAG_FECHA},
-							new int[] { R.id.cit_codigo, R.id.paciente, R.id.usuario, R.id.hora, R.id.fecha });
+							new int[] { R.id.cit_codigo, R.id.pac_cedula, R.id.paciente, R.id.usuario, R.id.hora, R.id.fecha });
 					// updating listview
 					setListAdapter(adapter);
 				}
