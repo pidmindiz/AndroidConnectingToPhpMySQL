@@ -5,17 +5,59 @@
     android:orientation="vertical"
     android:gravity="center_horizontal">
 	
+    <!-- Name Label -->
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuario"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:textSize="17dip"/>
+    
+    <!-- Input Name -->
+	<EditText android:id="@+id/usu_usuario"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="5dip"
+	    android:layout_marginBottom="15dip"
+	    android:singleLine="true"/>
+	
+	<!-- Price Label -->
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Contraseña"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:textSize="17dip"/>
+    
+    <!-- Input Price -->
+	<EditText android:id="@+id/usu_contrasena"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="5dip"
+	    android:layout_marginBottom="15dip"
+	    android:singleLine="true"/>
+    
+	<TextView
+        android:id="@+id/respuesta"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         />
+	
     <!--  Sample Dashboard screen with Two buttons -->
     <Button android:id="@+id/btnViewProducts"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="View Products"
+        android:text="Iniciar Sesion"
         android:layout_marginTop="25dip"/>
+    
     
     <Button android:id="@+id/btnCreateProduct"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Add New Products"
         android:layout_marginTop="25dip"/>
+    
 
 </LinearLayout>

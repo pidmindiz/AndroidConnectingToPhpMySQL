@@ -17,7 +17,7 @@ public final class R {
         public static final int btnCreateProduct=0x7f050003;
         public static final int btnDelete=0x7f050005;
         public static final int btnSave=0x7f050004;
-        public static final int btnViewProducts=0x7f05000e;
+        public static final int btnViewProducts=0x7f050011;
         public static final int cit_codigo=0x7f050006;
         public static final int dia_diagnostico=0x7f05000c;
         public static final int dia_fecha=0x7f05000d;
@@ -27,11 +27,14 @@ public final class R {
         public static final int inputName=0x7f050000;
         public static final int inputPrice=0x7f050001;
         public static final int pac_cedula=0x7f050007;
-        public static final int pac_edad=0x7f050011;
-        public static final int pac_nombres_apellidos=0x7f05000f;
-        public static final int pac_telefono=0x7f050012;
-        public static final int pac_tipo_sangre=0x7f050010;
+        public static final int pac_edad=0x7f050014;
+        public static final int pac_nombres_apellidos=0x7f050012;
+        public static final int pac_telefono=0x7f050015;
+        public static final int pac_tipo_sangre=0x7f050013;
         public static final int paciente=0x7f050008;
+        public static final int respuesta=0x7f050010;
+        public static final int usu_contrasena=0x7f05000f;
+        public static final int usu_usuario=0x7f05000e;
         public static final int usuario=0x7f050009;
     }
     public static final class layout {
