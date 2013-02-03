@@ -2,63 +2,71 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
-	<!-- Main ListView 
-		 Always give id value as list(@android:id/list)
-	-->
-	
-	 <TextView
+    android:orientation="vertical" >
+
+    <TextView
         android:id="@+id/pac_nombres_apellidos"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dip"
         android:paddingLeft="6dip"
+        android:paddingTop="6dip"
         android:textSize="17dip"
         android:textStyle="bold" />
-	
-	
-	 <TextView
+
+    <TextView
         android:id="@+id/pac_tipo_sangre"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dip"
         android:paddingLeft="6dip"
+        android:paddingTop="6dip"
         android:textSize="17dip"
         android:textStyle="bold" />
-	 
-	 <TextView
+
+    <TextView
         android:id="@+id/pac_edad"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dip"
         android:paddingLeft="6dip"
+        android:paddingTop="6dip"
         android:textSize="17dip"
         android:textStyle="bold" />
-	 
-	 <TextView
+
+    <TextView
         android:id="@+id/pac_telefono"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dip"
         android:paddingLeft="6dip"
+        android:paddingTop="6dip"
         android:textSize="17dip"
         android:textStyle="bold" />
-	 
-	 <TextView
+
+    <TextView
         android:id="@+id/pac_cedula"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="6dip"
         android:paddingLeft="6dip"
+        android:paddingTop="6dip"
         android:textSize="17dip"
         android:textStyle="bold" />
- 
-    
-      <ListView
+
+    <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-        
-        
+        android:layout_height="55dp" />
+
+    <EditText
+        android:id="@+id/txt_diagnostico"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:layout_marginBottom="15dip"
+        android:inputType="text|numberDecimal" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dip"
+        android:text="Guardar Diagnóstico" />
 
 </LinearLayout>

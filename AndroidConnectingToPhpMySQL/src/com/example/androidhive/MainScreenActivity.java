@@ -130,10 +130,6 @@ public class MainScreenActivity extends Activity{
 						// json success tag
 						success = json.getInt(TAG_SUCCESS);
 						if (success == 1) {
-							
-							txtRespuesta = (TextView) findViewById(R.id.respuesta);
-							txtRespuesta.setText("Usuario o contrasena incorrecto");
-							
 							Intent i = new Intent(getApplicationContext(), CitasDoctor.class);
 							startActivity(i);
 							

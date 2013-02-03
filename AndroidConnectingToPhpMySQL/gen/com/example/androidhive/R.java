@@ -33,6 +33,7 @@ public final class R {
         public static final int pac_tipo_sangre=0x7f050013;
         public static final int paciente=0x7f050008;
         public static final int respuesta=0x7f050010;
+        public static final int txt_diagnostico=0x7f050016;
         public static final int usu_contrasena=0x7f05000f;
         public static final int usu_usuario=0x7f05000e;
         public static final int usuario=0x7f050009;

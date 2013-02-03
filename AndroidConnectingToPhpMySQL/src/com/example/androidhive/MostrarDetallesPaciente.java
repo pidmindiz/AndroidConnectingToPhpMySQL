@@ -17,11 +17,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.ListView;
 
 public class MostrarDetallesPaciente extends ListActivity {
 
@@ -30,11 +32,12 @@ public class MostrarDetallesPaciente extends ListActivity {
 	TextView txtTipoSangre;
 	TextView txtTelefono;
 	TextView txtEdad;
+	EditText txtaDiagnotico;
 	
 	ListView lvDiagnosticos;
 
-	/*Button btnSave;
-	Button btnDelete;*/
+	Button btnSave;
+	/*Button btnDelete;*/
 
 	String pac_cedula;
 	
@@ -51,7 +54,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 	private static final String url_paciente_detalles = "http://www.ecuaconnect.com/ihm_android/crud/get_detalles_paciente.php";
 
 	// url to update product
-	private static final String url_update_product = "http://www.ecuaconnect.com/ihm_android/crud/get_detalles_paciente.php";
+	private static final String url_ingresar_diganostico= "http://www.ecuaconnect.com/ihm_android/crud/insert_diganostico.php";
 	
 	private static final String url_paciente_diagnosticos = "http://www.ecuaconnect.com/ihm_android/crud/get_diagnosticos_paciente.php";
 	
@@ -77,14 +80,16 @@ public class MostrarDetallesPaciente extends ListActivity {
 	JSONArray diagnosticos = null;
 	ArrayList<HashMap<String, String>> diagnosticosList;
 	
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mostrar_detalles_paciente);
-
+		
 		// save button
-		/*btnSave = (Button) findViewById(R.id.btnSave);
-		btnDelete = (Button) findViewById(R.id.btnDelete);*/
+		btnSave = (Button) findViewById(R.id.btnSave);
+		/*btnDelete = (Button) findViewById(R.id.btnDelete);*/
 		
 		diagnosticosList = new ArrayList<HashMap<String, String>>();
 		
@@ -99,14 +104,14 @@ public class MostrarDetallesPaciente extends ListActivity {
 		new CargarDiagnosticoPaciente().execute();
 
 		// save button click event
-		/*btnSave.setOnClickListener(new View.OnClickListener() {
+		btnSave.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// starting background task to update product
-				new SaveProductDetails().execute();
+				new SaveDiagnostico().execute();
 			}
-		});*/
+		});
 
 		// Delete button click event
 		/*btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -131,11 +136,11 @@ public class MostrarDetallesPaciente extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
+			/*pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
 			pDialog.setMessage("Cargando detalles de paciente... Por favor espere...");
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
-			pDialog.show();
+			pDialog.setCancelable(true);
+			pDialog.show();*/
 		}
 
 		/**
@@ -183,7 +188,6 @@ public class MostrarDetallesPaciente extends ListActivity {
 							// display product data in EditText
 							txtNombresApellidos.setText(paciente.getString(TAG_NOMBRES_APELLIDOS));
 							txtTipoSangre.setText("Tipo de Sangre: "+ paciente.getString(TAG_TIPO_SANGRE));
-							txtTipoSangre.setText("Tipo de Sangre: "+paciente.getString(TAG_TIPO_SANGRE));
 							txtEdad.setText("Edad: "+ paciente.getString(TAG_EDAD)+ " años");
 							txtCedula.setText("CI: "+ paciente.getString(TAG_CEDULA));
 							txtTelefono.setText("Teléfono: "+paciente.getString(TAG_TELEFONO));
@@ -213,16 +217,17 @@ public class MostrarDetallesPaciente extends ListActivity {
 	/**
 	 * Background Async Task to  Save product Details
 	 * */
-	class SaveProductDetails extends AsyncTask<String, String, String> {
+	class SaveDiagnostico extends AsyncTask<String, String, String> {
 
 		/**
 		 * Before starting background thread Show Progress Dialog
 		 * */
 		@Override
 		protected void onPreExecute() {
+			
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
-			pDialog.setMessage("Saving product ...");
+			pDialog.setMessage("Guardando diagnostico, Por favor espere... ");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
@@ -238,28 +243,48 @@ public class MostrarDetallesPaciente extends ListActivity {
 			//String price = txtPrice.getText().toString();
 			//String description = txtDesc.getText().toString();
 
+			txtaDiagnotico = (EditText) findViewById(R.id.txt_diagnostico);
+			String txt_diagnostico = txtaDiagnotico.getText().toString();
+			
+			
 			// Building Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair(TAG_CEDULA, pac_cedula));
-			params.add(new BasicNameValuePair(TAG_NOMBRES_APELLIDOS, ""));
-			params.add(new BasicNameValuePair(TAG_TELEFONO, ""));
-			params.add(new BasicNameValuePair(TAG_TIPO_SANGRE, ""));
-			params.add(new BasicNameValuePair(TAG_EDAD, ""));
+			params.add(new BasicNameValuePair(TAG_DIAGNOSTICO, txt_diagnostico));
+			params.add(new BasicNameValuePair("dia_cedula", pac_cedula));
+			
+			
 			// sending modified data through http request
 			// Notice that update product url accepts POST method
-			JSONObject json = jsonParser.makeHttpRequest(url_update_product,
-					"POST", params);
+			JSONObject json = jsonParser.makeHttpRequest(url_ingresar_diganostico, "GET", params);
 
 			// check json success tag
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				
 				if (success == 1) {
-					// successfully updated
-					Intent i = getIntent();
+					// updating listview
+					
+					//Intent i = getIntent();
 					// send result code 100 to notify about product update
-					setResult(100, i);
-					finish();
+					//setResult(100, i);
+					//finish();
+					
+					//txtaDiagnotico.setText("");
+					
+					new CargarDiagnosticoPaciente().execute();
+					//txtaDiagnotico.setText("");
+					
+					
+					/*Intent i = new Intent(getApplicationContext(), MostrarDetallesPaciente.class);
+					startActivity(i);*/
+					
+					
+					// successfully updated
+					//Intent i = getIntent();
+					// send result code 100 to notify about product update
+					//setResult(100, i);
+					//finish();
+					
 				} else {
 					// failed to update product
 				}
@@ -275,7 +300,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 		 * After completing background task Dismiss the progress dialog
 		 * **/
 		protected void onPostExecute(String file_url) {
-			// dismiss the dialog once product uupdated
+			// dismiss the dialog once product updated
+			
 			pDialog.dismiss();
 		}
 	}
@@ -347,11 +373,12 @@ public class MostrarDetallesPaciente extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			/*pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
-			pDialog.setMessage("Cargando Diagnosticos. Por favor espere...");
+			pDialog = new ProgressDialog(getListView().getContext());
+			pDialog.setMessage("Guardando diagnostico, Por favor espere... ");
 			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(false);
-			pDialog.show();*/
+			pDialog.setCancelable(true);
+			pDialog.show();
+			
 		}
 
 		/**
@@ -374,6 +401,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 				if (success == 1) {
 					// products found
 					// Getting Array of Products
+					diagnosticosList.clear();
 					diagnosticos = json.getJSONArray(TAG_DIAGNOSTICOS);
 
 					// looping through All Products
@@ -417,6 +445,9 @@ public class MostrarDetallesPaciente extends ListActivity {
 			// dismiss the dialog after getting all products
 			pDialog.dismiss();
 			// updating UI from Background Thread
+			
+			
+			
 			runOnUiThread(new Runnable() {
 				public void run() {
 					/**
@@ -427,6 +458,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 							R.layout.list_item_diagnostico, new String[] { TAG_DIAGNOSTICO, TAG_FECHA},
 							new int[] { R.id.dia_diagnostico, R.id.dia_fecha });
 					// updating listview
+					ListView list = getListView();
+					list.removeAllViewsInLayout();
 					setListAdapter(adapter);
 				}
 			});
