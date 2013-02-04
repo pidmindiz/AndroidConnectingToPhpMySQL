@@ -23,12 +23,12 @@ import android.widget.TextView;
 
 public class MainScreenActivity extends Activity{
 	
-	Button btnViewProducts;
-	Button btnNewProduct;
+	Button btnIniciarSesion;
 	
 	TextView txtUsuario;
 	TextView txtContrasena;
 	TextView txtRespuesta;
+	
 	// Progress Dialog
 		private ProgressDialog pDialog;
 		JSONParser jsonParser = new JSONParser();
@@ -56,33 +56,18 @@ public class MainScreenActivity extends Activity{
 		setContentView(R.layout.main_screen);
 		
 		// Buttons
-		btnViewProducts = (Button) findViewById(R.id.btnViewProducts);
-		btnNewProduct = (Button) findViewById(R.id.btnCreateProduct);
+		btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
 		
 		// view products click event
-		btnViewProducts.setOnClickListener(new View.OnClickListener() {
+		btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View view) {
-				// Launching All products Activity
-				//Intent i = new Intent(getApplicationContext(), CitasDoctor.class);
-				//startActivity(i);
-			new verificarUsuario().execute();
+				new verificarUsuario().execute();
 			}
 			
 		});
-		
-		// view products click event
-		/*btnNewProduct.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View view) {
-				// Launching create new product activity
-				Intent i = new Intent(getApplicationContext(), NewProductActivity.class);
-				startActivity(i);
-				
-			}
-		});*/
+
 	}
 	
 	class verificarUsuario extends AsyncTask<String, String, String> {

@@ -32,7 +32,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 	TextView txtTipoSangre;
 	TextView txtTelefono;
 	TextView txtEdad;
-	EditText txtaDiagnotico;
+	TextView txtMensaje;
+	TextView txtaDiagnotico;
 	
 	ListView lvDiagnosticos;
 
@@ -112,17 +113,6 @@ public class MostrarDetallesPaciente extends ListActivity {
 				new SaveDiagnostico().execute();
 			}
 		});
-
-		// Delete button click event
-		/*btnDelete.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// deleting product in background thread
-				new DeleteProduct().execute();
-			}
-		});*/
-
 	}
 
 	/**
@@ -136,11 +126,11 @@ public class MostrarDetallesPaciente extends ListActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			/*pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
+			pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
 			pDialog.setMessage("Cargando detalles de paciente... Por favor espere...");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
-			pDialog.show();*/
+			pDialog.show();
 		}
 
 		/**
@@ -170,8 +160,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 						success = json.getInt(TAG_SUCCESS);
 						if (success == 1) {
 							// successfully received product details
-							JSONArray pacienteObj = json
-									.getJSONArray(TAG_PACIENTE); // JSON Array
+							JSONArray pacienteObj = json.getJSONArray(TAG_PACIENTE); // JSON Array
 							
 							// get first product object from JSON Array
 							JSONObject paciente = pacienteObj.getJSONObject(0);
@@ -224,13 +213,13 @@ public class MostrarDetallesPaciente extends ListActivity {
 		 * */
 		@Override
 		protected void onPreExecute() {
-			
 			super.onPreExecute();
 			pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
-			pDialog.setMessage("Guardando diagnostico, Por favor espere... ");
+			pDialog.setMessage("Guardando diagnóstico. Por favor espere...");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
+			
 		}
 
 		/**
@@ -243,7 +232,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 			//String price = txtPrice.getText().toString();
 			//String description = txtDesc.getText().toString();
 
-			txtaDiagnotico = (EditText) findViewById(R.id.txt_diagnostico);
+			txtaDiagnotico = (TextView) findViewById(R.id.txt_diagnostico);
 			String txt_diagnostico = txtaDiagnotico.getText().toString();
 			
 			
@@ -268,22 +257,11 @@ public class MostrarDetallesPaciente extends ListActivity {
 					// send result code 100 to notify about product update
 					//setResult(100, i);
 					//finish();
-					
-					//txtaDiagnotico.setText("");
-					
+				
 					new CargarDiagnosticoPaciente().execute();
-					//txtaDiagnotico.setText("");
-					
-					
+					txtaDiagnotico.setText("");
 					/*Intent i = new Intent(getApplicationContext(), MostrarDetallesPaciente.class);
 					startActivity(i);*/
-					
-					
-					// successfully updated
-					//Intent i = getIntent();
-					// send result code 100 to notify about product update
-					//setResult(100, i);
-					//finish();
 					
 				} else {
 					// failed to update product
@@ -302,64 +280,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 		protected void onPostExecute(String file_url) {
 			// dismiss the dialog once product updated
 			
-			pDialog.dismiss();
+			//pDialog.dismiss();
 		}
-	}
-
-	/*****************************************************************
-	 * Background Async Task to Delete Product
-	 * */
-	class DeleteProduct extends AsyncTask<String, String, String> {
-
-		/**
-		 * Before starting background thread Show Progress Dialog
-		 * */
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			pDialog = new ProgressDialog(MostrarDetallesPaciente.this);
-			pDialog.setMessage("Deleting Product...");
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			pDialog.show();
-		}
-
-		/**
-		 * Deleting product
-		 * */
-		protected String doInBackground(String... args) {
-
-			// Check for success tag
-			int success;
-			try {
-				// Building Parameters
-				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("pac_cedula", pac_cedula));
-
-				// getting product details by making HTTP request
-				JSONObject json = jsonParser.makeHttpRequest(
-						url_delete_product, "POST", params);
-
-				// check your log for json response
-				Log.d("Delete Product", json.toString());
-				
-				// json success tag
-				success = json.getInt(TAG_SUCCESS);
-				if (success == 1) {
-					// product successfully deleted
-					// notify previous activity by sending code 100
-					Intent i = getIntent();
-					// send result code 100 to notify about product deletion
-					setResult(100, i);
-					finish();
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
 	}
 	
 	/**
@@ -372,13 +294,12 @@ public class MostrarDetallesPaciente extends ListActivity {
 		 * */
 		@Override
 		protected void onPreExecute() {
-			super.onPreExecute();
-			pDialog = new ProgressDialog(getListView().getContext());
-			pDialog.setMessage("Guardando diagnostico, Por favor espere... ");
+			//super.onPreExecute();
+			/*pDialog = new ProgressDialog(getListView().getContext());
+			pDialog.setMessage("Cargando diagnostico, Por favor espere... ");
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
-			pDialog.show();
-			
+			pDialog.show();*/
 		}
 
 		/**
@@ -393,7 +314,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 			
 			// Check your log cat for JSON reponse
 			Log.d("Todas los diagnosticos: ", json.toString());
-
+			txtMensaje = (TextView) findViewById(R.id.txt_mensaje);
+			
 			try {
 				// Checking for SUCCESS TAG
 				int success = json.getInt(TAG_SUCCESS);
@@ -401,6 +323,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 				if (success == 1) {
 					// products found
 					// Getting Array of Products
+					
 					diagnosticosList.clear();
 					diagnosticos = json.getJSONArray(TAG_DIAGNOSTICOS);
 
@@ -423,13 +346,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 						diagnosticosList.add(map);
 					}
 				} else {
-					// no products found
-					// Launch Add New product Activity
-					Intent i = new Intent(getApplicationContext(),
-							NewProductActivity.class);
-					// Closing all previous activities
-					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(i);
+					txtMensaje.setVisibility(View.VISIBLE);
+					txtMensaje.setText("No existen diagnosticos.");	
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -458,9 +376,8 @@ public class MostrarDetallesPaciente extends ListActivity {
 							R.layout.list_item_diagnostico, new String[] { TAG_DIAGNOSTICO, TAG_FECHA},
 							new int[] { R.id.dia_diagnostico, R.id.dia_fecha });
 					// updating listview
-					ListView list = getListView();
-					list.removeAllViewsInLayout();
 					setListAdapter(adapter);
+					
 				}
 			});
 
