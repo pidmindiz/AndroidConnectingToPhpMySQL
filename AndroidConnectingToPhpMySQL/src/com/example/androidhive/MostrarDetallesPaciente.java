@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -41,6 +42,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 	/*Button btnDelete;*/
 
 	String pac_cedula;
+	String cit_codigo;
 	
 	// Creating JSON Parser object
 	JSONParser jParser = new JSONParser();
@@ -67,7 +69,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 	private static final String TAG_PACIENTE = "pacientes";
 	private static final String TAG_DIAGNOSTICOS = "diagnosticos";
 	
-	//private static final String TAG_CODIGO = "cit_codigo";
+	private static final String TAG_CODIGO = "cit_codigo";
 	private static final String TAG_CEDULA = "pac_cedula";
 	private static final String TAG_NOMBRES_APELLIDOS = "pac_nombres_apellidos";
 	private static final String TAG_TIPO_SANGRE = "pac_tipo_sangre";
@@ -77,7 +79,11 @@ public class MostrarDetallesPaciente extends ListActivity {
 	//private static final String TAG_CODIGO = "cit_codigo";
 	private static final String TAG_DIAGNOSTICO = "dia_diagnostico";
 	private static final String TAG_FECHA = "dia_fecha";
+	
+	private boolean TAG_ESTADO = false;
 
+	private boolean TAG_ESTADO_INGRESO_DIAGNOSTICO = false;
+	
 	JSONArray diagnosticos = null;
 	ArrayList<HashMap<String, String>> diagnosticosList;
 	
@@ -99,11 +105,23 @@ public class MostrarDetallesPaciente extends ListActivity {
 		
 		// getting product id (pid) from intent
 		pac_cedula = i.getStringExtra(TAG_CEDULA);
-
+		cit_codigo = i.getStringExtra(TAG_CODIGO);
+		
 		// Getting complete product details in background thread
 		new GetPacienteDetalles().execute();
 		new CargarDiagnosticoPaciente().execute();
-
+		
+		if(TAG_ESTADO)
+		{
+			AlertDialog alertDialog;
+			alertDialog = new AlertDialog.Builder(MostrarDetallesPaciente.this).create();
+			alertDialog.setTitle("Diagnósticos.");
+			alertDialog.setMessage("No existen diagnósticos ingresados.");
+			alertDialog.show();
+		}
+		
+		txtaDiagnotico = (TextView) findViewById(R.id.txt_diagnostico);
+		
 		// save button click event
 		btnSave.setOnClickListener(new View.OnClickListener() {
 
@@ -111,6 +129,10 @@ public class MostrarDetallesPaciente extends ListActivity {
 			public void onClick(View arg0) {
 				// starting background task to update product
 				new SaveDiagnostico().execute();
+				if(TAG_ESTADO_INGRESO_DIAGNOSTICO)
+				{
+					txtaDiagnotico.setText(""); 
+				}
 			}
 		});
 	}
@@ -150,8 +172,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 
 						// getting product details by making HTTP request
 						// Note that product details url will use GET request
-						JSONObject json = jsonParser.makeHttpRequest(
-								url_paciente_detalles, "GET", params);
+						JSONObject json = jsonParser.makeHttpRequest(url_paciente_detalles, "GET", params);
 
 						// check your log for json response
 						Log.d("Single Product Details", json.toString());
@@ -192,8 +213,6 @@ public class MostrarDetallesPaciente extends ListActivity {
 
 			return null;
 		}
-
-
 		/**
 		 * After completing background task Dismiss the progress dialog
 		 * **/
@@ -207,7 +226,6 @@ public class MostrarDetallesPaciente extends ListActivity {
 	 * Background Async Task to  Save product Details
 	 * */
 	class SaveDiagnostico extends AsyncTask<String, String, String> {
-
 		/**
 		 * Before starting background thread Show Progress Dialog
 		 * */
@@ -219,7 +237,6 @@ public class MostrarDetallesPaciente extends ListActivity {
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
-			
 		}
 
 		/**
@@ -227,49 +244,31 @@ public class MostrarDetallesPaciente extends ListActivity {
 		 * */
 		protected String doInBackground(String... args) {
 
-			// getting updated data from EditTexts
-			//String name = txtName.getText().toString();
-			//String price = txtPrice.getText().toString();
-			//String description = txtDesc.getText().toString();
-
-			txtaDiagnotico = (TextView) findViewById(R.id.txt_diagnostico);
 			String txt_diagnostico = txtaDiagnotico.getText().toString();
-			
-			
 			// Building Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair(TAG_DIAGNOSTICO, txt_diagnostico));
 			params.add(new BasicNameValuePair("dia_cedula", pac_cedula));
+			params.add(new BasicNameValuePair("cit_codigo", cit_codigo));
 			
-			
-			// sending modified data through http request
-			// Notice that update product url accepts POST method
 			JSONObject json = jsonParser.makeHttpRequest(url_ingresar_diganostico, "GET", params);
-
-			// check json success tag
 			try {
 				int success = json.getInt(TAG_SUCCESS);
 				
 				if (success == 1) {
-					// updating listview
-					
-					//Intent i = getIntent();
-					// send result code 100 to notify about product update
-					//setResult(100, i);
-					//finish();
-				
 					new CargarDiagnosticoPaciente().execute();
-					txtaDiagnotico.setText("");
-					/*Intent i = new Intent(getApplicationContext(), MostrarDetallesPaciente.class);
+					TAG_ESTADO_INGRESO_DIAGNOSTICO = true;
+					/*Intent i = new Intent(getApplicationContext(),
+							CitasDoctor.class);
+					// Closing all previous activities
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(i);*/
-					
 				} else {
-					// failed to update product
+					TAG_ESTADO_INGRESO_DIAGNOSTICO = false;
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
 			return null;
 		}
 
@@ -294,12 +293,6 @@ public class MostrarDetallesPaciente extends ListActivity {
 		 * */
 		@Override
 		protected void onPreExecute() {
-			//super.onPreExecute();
-			/*pDialog = new ProgressDialog(getListView().getContext());
-			pDialog.setMessage("Cargando diagnostico, Por favor espere... ");
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			pDialog.show();*/
 		}
 
 		/**
@@ -314,7 +307,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 			
 			// Check your log cat for JSON reponse
 			Log.d("Todas los diagnosticos: ", json.toString());
-			txtMensaje = (TextView) findViewById(R.id.txt_mensaje);
+			
 			
 			try {
 				// Checking for SUCCESS TAG
@@ -323,6 +316,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 				if (success == 1) {
 					// products found
 					// Getting Array of Products
+					TAG_ESTADO = false;
 					
 					diagnosticosList.clear();
 					diagnosticos = json.getJSONArray(TAG_DIAGNOSTICOS);
@@ -346,8 +340,7 @@ public class MostrarDetallesPaciente extends ListActivity {
 						diagnosticosList.add(map);
 					}
 				} else {
-					txtMensaje.setVisibility(View.VISIBLE);
-					txtMensaje.setText("No existen diagnosticos.");	
+					TAG_ESTADO = true;
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

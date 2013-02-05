@@ -6,6 +6,15 @@
 	<!-- Main ListView 
 		 Always give id value as list(@android:id/list)
 	-->
+	<TextView
+        android:id="@+id/txt_mensaje"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dip"
+        android:paddingTop="6dip"
+        android:textStyle="bold"
+        android:visibility="gone" />
+	
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

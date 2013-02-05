@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-
     <!-- Name Label -->
     <TextView
         android:id="@+id/paciente"
@@ -27,17 +26,7 @@
         android:paddingTop="6dip"
         android:paddingLeft="6dip"
         android:textSize="17dip"
-        android:textStyle="bold" />
-    
-    
-        <TextView
-        android:id="@+id/usuario"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="6dip"
-        android:paddingLeft="6dip"
-        android:textSize="17dip"
-        android:textStyle="bold" />
+        android:textStyle="bold" />    
         
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

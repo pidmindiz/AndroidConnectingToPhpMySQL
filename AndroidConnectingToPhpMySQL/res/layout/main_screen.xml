@@ -37,7 +37,8 @@
 	    android:layout_height="wrap_content"
 	    android:layout_margin="5dip"
 	    android:layout_marginBottom="15dip"
-	    android:singleLine="true"/>
+	    android:singleLine="true"
+	    android:password="true"/>
     
 	<TextView
         android:id="@+id/respuesta"
