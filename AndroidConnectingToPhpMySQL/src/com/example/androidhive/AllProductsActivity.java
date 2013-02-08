@@ -200,7 +200,7 @@ public class AllProductsActivity extends ListActivity {
 							AllProductsActivity.this, productsList,
 							R.layout.list_item, new String[] { TAG_PID,
 									TAG_PACIENTE, TAG_USUARIO, TAG_HORA, TAG_FECHA},
-							new int[] { R.id.cit_codigo, R.id.paciente, R.id.hora, R.id.fecha });
+							new int[] { R.id.cit_codigo, R.id.paciente, R.id.usuario, R.id.hora, R.id.fecha });
 					// updating listview
 					setListAdapter(adapter);
 				}

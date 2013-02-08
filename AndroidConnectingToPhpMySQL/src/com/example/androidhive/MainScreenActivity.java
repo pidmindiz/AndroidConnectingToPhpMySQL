@@ -42,7 +42,6 @@ public class MainScreenActivity extends Activity{
 
 		// JSON Node names
 		private static final String TAG_SUCCESS = "success";
-		private static final String TAG_TIPO_USUARIO = "usu_tipo_usuario";
 		private static final String TAG_USUARIOS = "usuarios";
 		
 		/*private static final String TAG_NOMBRES_APELLIDOS = "usu_nombres_apellidos";
@@ -96,7 +95,6 @@ public class MainScreenActivity extends Activity{
 				public void run() {
 					// Check for success tag
 					int success;
-					String tipo_usuario;
 					try {
 						
 						txtUsuario = (TextView) findViewById(R.id.usu_usuario);
@@ -109,19 +107,17 @@ public class MainScreenActivity extends Activity{
 
 						// getting product details by making HTTP request
 						// Note that product details url will use GET request
-						JSONObject json = jsonParser.makeHttpRequest(url_verificar_usuario, "GET", params);
+						JSONObject json = jsonParser.makeHttpRequest(url_verificar_usuario, "POST", params);
 
 						// check your log for json response
 						Log.d("Single Product Details", json.toString());
 						
 						// json success tag
 						success = json.getInt(TAG_SUCCESS);
-						tipo_usuario = json.getString(TAG_TIPO_USUARIO);
 						if (success == 1) {
-							if (tipo_usuario.equalsIgnoreCase("OD")) {
-								Intent i = new Intent(getApplicationContext(), CitasDoctor.class);
-								startActivity(i);
-							}
+							Intent i = new Intent(getApplicationContext(), CitasDoctor.class);
+							startActivity(i);
+							
 						}else{
 							// product with pid not found
 							txtRespuesta = (TextView) findViewById(R.id.respuesta);

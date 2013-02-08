@@ -9,8 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.bool;
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,8 +25,6 @@ import android.widget.TextView;
 
 public class CitasDoctor extends ListActivity {
 
-	TextView txtMensaje;
-	
 	// Progress Dialog
 	private ProgressDialog pDialog;
 
@@ -50,8 +46,6 @@ public class CitasDoctor extends ListActivity {
 	private static final String TAG_FECHA = "cit_fecha";
 	private static final String TAG_USUARIO = "cit_usuario";
 	private static final String TAG_PACIENTE = "cit_paciente";
-	
-	private boolean TAG_ESTADO = false;
 
 	// products JSONArray
 	JSONArray citas = null;
@@ -67,16 +61,6 @@ public class CitasDoctor extends ListActivity {
 		// Loading products in Background Thread
 		new CagarCitas().execute();
 
-		if(TAG_ESTADO)
-		{
-			AlertDialog alertDialog;
-			alertDialog = new AlertDialog.Builder(CitasDoctor.this).create();
-			alertDialog.setTitle("Citas.");
-			alertDialog.setMessage("No existen citas para el día de hoy.");
-			alertDialog.show();
-		}
-			
-		
 		// Get listview
 		ListView lv = getListView();
 
@@ -88,16 +72,14 @@ public class CitasDoctor extends ListActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// getting values from selected ListItem
-				String pac_cedula = ((TextView) view.findViewById(R.id.pac_cedula)).getText().toString();
-				
-				String cit_codigo = ((TextView) view.findViewById(R.id.cit_codigo)).getText().toString();
-				
+				String pac_cedula = ((TextView) view.findViewById(R.id.pac_cedula)).getText()
+						.toString();
+
 				// Starting new intent
 				Intent in = new Intent(getApplicationContext(),
 						MostrarDetallesPaciente.class);
 				// sending pid to next activity
 				in.putExtra(TAG_CEDULA, pac_cedula);
-				in.putExtra(TAG_CODIGO, cit_codigo);
 				
 				// starting new activity and expecting some response back
 				startActivityForResult(in, 100);
@@ -170,6 +152,7 @@ public class CitasDoctor extends ListActivity {
 						String pac_cedula = c.getString(TAG_CEDULA);
 						String hora = c.getString(TAG_HORA);
 						String fecha = c.getString(TAG_FECHA);
+						String usuario = c.getString(TAG_USUARIO);
 						String paciente = c.getString(TAG_PACIENTE);
 						
 
@@ -180,6 +163,7 @@ public class CitasDoctor extends ListActivity {
 						map.put(TAG_CODIGO, cit_codigo);
 						map.put(TAG_CEDULA, pac_cedula);
 						map.put(TAG_PACIENTE, paciente);
+						map.put(TAG_USUARIO, usuario);
 						map.put(TAG_FECHA, hora);
 						map.put(TAG_HORA, fecha);
 
@@ -187,7 +171,13 @@ public class CitasDoctor extends ListActivity {
 						citasList.add(map);
 					}
 				} else {
-						TAG_ESTADO = true;
+					// no products found
+					// Launch Add New product Activity
+					Intent i = new Intent(getApplicationContext(),
+							NewProductActivity.class);
+					// Closing all previous activities
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -211,8 +201,8 @@ public class CitasDoctor extends ListActivity {
 					ListAdapter adapter = new SimpleAdapter(
 							CitasDoctor.this, citasList,
 							R.layout.list_item, new String[] { TAG_CODIGO, TAG_CEDULA,
-									TAG_PACIENTE, TAG_HORA, TAG_FECHA},
-							new int[] { R.id.cit_codigo, R.id.pac_cedula, R.id.paciente, R.id.hora, R.id.fecha });
+									TAG_PACIENTE, TAG_USUARIO, TAG_HORA, TAG_FECHA},
+							new int[] { R.id.cit_codigo, R.id.pac_cedula, R.id.paciente, R.id.usuario, R.id.hora, R.id.fecha });
 					// updating listview
 					setListAdapter(adapter);
 				}
